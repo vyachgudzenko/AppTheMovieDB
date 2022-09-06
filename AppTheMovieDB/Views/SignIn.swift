@@ -48,7 +48,7 @@ struct SignIn: View {
                 }
                 .alert("Something went wrong. Check login and password",isPresented: $movieFetcher.isError){
                     Button("OK", role: .cancel) {
-                        movieFetcher.isError = false
+                        
                     }
 
                 }
