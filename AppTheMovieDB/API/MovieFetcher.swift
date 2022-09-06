@@ -15,6 +15,7 @@ class MovieFetcher:ObservableObject{
     @Published var movies: [Preview] = []
     @Published var currentMovie:Movie = Movie.defaultMovie
     @Published var isLogin:Bool = false
+    @Published var isError:Bool = false
     
     enum FetchError:Error{
         case badRequest
@@ -48,15 +49,19 @@ class MovieFetcher:ObservableObject{
                 } catch let DecodingError.dataCorrupted(context) {
                     print(context)
                 } catch let DecodingError.keyNotFound(key, context) {
+                    self.isError = true
                     print("Key '\(key)' not found:", context.debugDescription)
                     print("codingPath:", context.codingPath)
                 } catch let DecodingError.valueNotFound(value, context) {
+                    self.isError = true
                     print("Value '\(value)' not found:", context.debugDescription)
                     print("codingPath:", context.codingPath)
                 } catch let DecodingError.typeMismatch(type, context)  {
+                    self.isError = true
                     print("Type '\(type)' mismatch:", context.debugDescription)
                     print("codingPath:", context.codingPath)
                 } catch {
+                    self.isError = true
                     print("error: ", error)
                 }
             }
@@ -88,7 +93,10 @@ class MovieFetcher:ObservableObject{
         let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans().apiKey)&language=en-US&page=\(1)"
         guard let url = URL(string: urlString) else {return}
         let (data,response) = try await URLSession.shared.data(for: URLRequest(url: url))
-        guard (response as? HTTPURLResponse)?.statusCode == 200 else {throw FetchError.badRequest}
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            throw FetchError.badRequest
+            
+        }
         movies = try JSONDecoder().decode(Page.self, from: data).results
     }
     

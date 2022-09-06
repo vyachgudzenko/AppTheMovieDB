@@ -46,13 +46,20 @@ struct SignIn: View {
                         PopularMovies()
                     }
                 }
+                .alert("Something went wrong. Check login and password",isPresented: $movieFetcher.isError){
+                    Button("OK", role: .cancel) {
+                        movieFetcher.isError = false
+                    }
 
-                    
+                }
+
                 Spacer()
                 
             }.padding(.horizontal,30)
         }
     }
+    
+    
 }
 
 struct SignIn_Previews: PreviewProvider {
