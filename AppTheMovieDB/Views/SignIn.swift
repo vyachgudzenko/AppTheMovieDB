@@ -9,9 +9,7 @@ import SwiftUI
 
 struct SignIn: View {
     
-    //@EnvironmentObject var movieFetcher:MovieFetcher
-    @State var username:String = ""
-    @State var password:String = ""
+    @EnvironmentObject var movieFetcher:MovieFetcher
     
     var body: some View {
         ZStack{
@@ -23,16 +21,16 @@ struct SignIn: View {
                     .aspectRatio(contentMode: .fit)
                     .padding(.top,100)
                 
-                SignInTextAndSecureField(text: $username, placeholderText: "Enter your name", type: .textField)
+                SignInTextAndSecureField(text: $movieFetcher.username, placeholderText: "Enter your name", type: .textField)
                     .frame(height:70)
                     .padding(.top,50)
                     
-                SignInTextAndSecureField(text: $password, placeholderText: "Enter your password", type: .secureField)
+                SignInTextAndSecureField(text: $movieFetcher.password, placeholderText: "Enter your password", type: .secureField)
                     .frame(height:70)
                     .padding(.top,50)
                     
                 Button {
-                    print("works")
+                    movieFetcher.logIn()
                 } label: {
                     let startColor:UIColor = UIColor(red: 99 / 255, green: 200 / 255, blue: 166 / 255, alpha: 1)
                     let endColor:UIColor = UIColor(red: 82 / 255, green: 179 / 255, blue: 221 / 255, alpha: 1)
@@ -43,6 +41,10 @@ struct SignIn: View {
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                         .foregroundColor(.white)
                         .padding(.top,50)
+                }.fullScreenCover(isPresented: $movieFetcher.isLogin) {
+                    NavigationView{
+                        PopularMovies()
+                    }
                 }
 
                     
