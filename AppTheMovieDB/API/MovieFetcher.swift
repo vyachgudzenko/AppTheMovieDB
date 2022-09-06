@@ -74,4 +74,22 @@ class MovieFetcher:ObservableObject{
             }
         }
     }
+    
+    @available(iOS 15.0, *)
+    func fetchPage() async throws{
+        let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans().apiKey)&language=en-US&page=1"
+        guard let url = URL(string: urlString) else {return}
+        let (data,response) = try await URLSession.shared.data(for: URLRequest(url: url))
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {throw FetchError.badRequest}
+        movies = try JSONDecoder().decode(Page.self, from: data).results
+    }
+    
+    @available(iOS 15.0, *)
+    func fetchMovie(id:Int) async throws{
+        let urlString = "https://api.themoviedb.org/3/movie/\(id)?api_key=\(URLConstans().apiKey)&language=en-US"
+        guard let url = URL(string: urlString) else {return}
+        let (data,response) = try await URLSession.shared.data(for: URLRequest(url: url))
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {throw FetchError.badRequest}
+        currentMovie = try JSONDecoder().decode(Movie.self, from: data)
+    }
 }
