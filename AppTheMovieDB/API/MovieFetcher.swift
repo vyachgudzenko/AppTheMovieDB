@@ -11,7 +11,13 @@ import SwiftUI
 class MovieFetcher:ObservableObject{
     @Published var username:String = "vyachProfileForTest"
     @Published var password:String = "swift2022"
-    @Published var numberOfPage:Int = 1
+    @Published var numberOfPage:Int = 1{
+        didSet{
+            Task{
+                try? await fetchPage()
+            }
+        }
+    }
     @Published var movies: [Preview] = []
     @Published var currentMovie:Movie = Movie.defaultMovie
     @Published var isLogin:Bool = false
@@ -90,7 +96,7 @@ class MovieFetcher:ObservableObject{
     //отримуємо список фільмів
     @available(iOS 15.0, *)
     func fetchPage() async throws{
-        let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans().apiKey)&language=en-US&page=\(1)"
+        let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans().apiKey)&language=en-US&page=\(numberOfPage)"
         guard let url = URL(string: urlString) else {return}
         let (data,response) = try await URLSession.shared.data(for: URLRequest(url: url))
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
