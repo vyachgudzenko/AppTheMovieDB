@@ -13,7 +13,7 @@ enum TypeTextField{
 }
 
 struct SignInTextAndSecureField: View {
-    let strokeColor:UIColor = UIColor(red: 99 / 255, green: 200 / 255, blue: 166 / 255, alpha: 1)
+    
     @Binding var text:String
     let placeholderText:String
     let type:TypeTextField
@@ -21,7 +21,7 @@ struct SignInTextAndSecureField: View {
     var body: some View{
         ZStack{
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color.init(strokeColor),lineWidth: 2)
+                .stroke(Color.init(ColorConstants().strokeColor),lineWidth: 2)
             if text.isEmpty{
                 Text(placeholderText)
                     .foregroundColor(.gray)

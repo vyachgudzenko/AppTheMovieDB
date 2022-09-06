@@ -13,8 +13,7 @@ struct SignIn: View {
     
     var body: some View {
         ZStack{
-            let backgoundColor:UIColor = UIColor(red: 14 / 255.0, green: 36 / 255.0, blue: 63 / 255.0, alpha: 1)
-            Color.init(backgoundColor).ignoresSafeArea(.all)
+            Color.init(ColorConstants().backgoundColor).ignoresSafeArea(.all)
             VStack{
                 Image("logo")
                     .resizable()
@@ -32,12 +31,9 @@ struct SignIn: View {
                 Button {
                     movieFetcher.logIn()
                 } label: {
-                    let startColor:UIColor = UIColor(red: 99 / 255, green: 200 / 255, blue: 166 / 255, alpha: 1)
-                    let endColor:UIColor = UIColor(red: 82 / 255, green: 179 / 255, blue: 221 / 255, alpha: 1)
-                    
                     Text("Go")
                         .frame(width: 180, height: 70)
-                        .background(LinearGradient(colors: [.init(startColor),.init(endColor)], startPoint: .leading, endPoint: .trailing))
+                        .background(LinearGradient(colors: [.init(ColorConstants().startColor),.init(ColorConstants().endColor)], startPoint: .leading, endPoint: .trailing))
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                         .foregroundColor(.white)
                         .padding(.top,50)
