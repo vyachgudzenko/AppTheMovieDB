@@ -11,6 +11,7 @@ import SwiftUI
 class MovieFetcher:ObservableObject{
     @Published var username:String = "vyachProfileForTest"
     @Published var password:String = "swift2022"
+    @Published var numberOfPage:Int = 1
     @Published var movies: [Preview] = []
     @Published var currentMovie:Movie = Movie.defaultMovie
     @Published var isLogin:Bool = false
@@ -20,6 +21,8 @@ class MovieFetcher:ObservableObject{
         case badJSON
     }
     
+    //Загальна функція для отримання данних
+    //етап покращення - додати кодуваня в JSON  у тілі функції
     func load< T: Codable>(urlString:String,httpBody:Data?,expectedType:T.Type, _ completion: @escaping (T) -> Void) {
         guard let url = URL(string: urlString) else {
             return
@@ -61,13 +64,17 @@ class MovieFetcher:ObservableObject{
         task.resume()
     }
     
+    //коряво реалізована функція входу
     func logIn(){
+        //отримуємо request token
         load(urlString: URLConstans().requestTokenLink, httpBody: nil, expectedType: ResponseRequestToken.self) { [self] tokenResponse in
             let authInfo = AuthWithLogin(username: username, password: password, request_token: tokenResponse.request_token)
             let authJSON = try? JSONEncoder().encode(authInfo)
+            //отримуємо пермішн для користувача(логін та пароль)
             load(urlString: URLConstans().authWithLoginLink, httpBody: authJSON, expectedType: ResponseRequestToken.self) { [self] authResponse in
                 let sessionInfo = RequestToken(request_token: authResponse.request_token)
                 let sessionJSON = try? JSONEncoder().encode(sessionInfo)
+                //отримуємо session ID
                 load(urlString: URLConstans().sessionIdLink, httpBody: sessionJSON, expectedType: ResponseSessionId.self) { [self] sessionResponse in
                     isLogin = sessionResponse.success
                 }
@@ -75,9 +82,10 @@ class MovieFetcher:ObservableObject{
         }
     }
     
+    //отримуємо список фільмів
     @available(iOS 15.0, *)
     func fetchPage() async throws{
-        let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans().apiKey)&language=en-US&page=1"
+        let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans().apiKey)&language=en-US&page=\(1)"
         guard let url = URL(string: urlString) else {return}
         let (data,response) = try await URLSession.shared.data(for: URLRequest(url: url))
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {throw FetchError.badRequest}

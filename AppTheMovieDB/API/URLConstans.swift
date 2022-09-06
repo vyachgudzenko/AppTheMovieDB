@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+//Cтруктура для зберігання посилань апі та ключа
 struct URLConstans:Codable{
     var apiKey = "7ddd428c76f6f9fd931cd37916fcc80a"
     var requestTokenLink:String {

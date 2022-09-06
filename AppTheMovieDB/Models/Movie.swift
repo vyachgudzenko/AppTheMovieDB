@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 struct Collection:Codable{
     var id:Int
     var name:String
