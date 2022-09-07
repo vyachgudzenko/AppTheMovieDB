@@ -19,4 +19,8 @@ struct URLConstans:Codable{
         "https://api.themoviedb.org/3/authentication/session/new?api_key=\(apiKey)"
     }
     
+    var backdropPath:String = "https://image.tmdb.org/t/p/w780"
+    
+    var posterPath:String = "https://image.tmdb.org/t/p/w500"
+    
 }
