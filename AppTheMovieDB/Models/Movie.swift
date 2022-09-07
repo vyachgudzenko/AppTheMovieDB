@@ -21,7 +21,7 @@ struct ProductionCompany:Codable,Hashable{
     var origin_country:String
 }
 
-struct Genre:Codable{
+struct Genre:Codable,Hashable{
     var id:Int
     var name:String
 }
