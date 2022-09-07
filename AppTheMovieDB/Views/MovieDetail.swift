@@ -76,9 +76,9 @@ struct MovieDetail: View {
                 let hGrid:[GridItem] = [
                     GridItem(.flexible()),
                     GridItem(.flexible()),
-                    GridItem(.flexible())
+                    //GridItem(.flexible())
                 ]
-                LazyVGrid(columns: hGrid,spacing: 5){
+                LazyVGrid(columns: hGrid,spacing: 3){
                     ForEach(movieFetcher.currentMovie.genres, id: \.self){ genre in
                         Text(genre.name)
                             .padding(.horizontal)
@@ -115,11 +115,17 @@ struct MovieDetail: View {
                     }
                 }.padding(.top)
                 //Vote
-                
+                HStack {
+                    CircleProgressBar(vote: Float(movieFetcher.currentMovie.vote_average))
+                        .frame(width: 80, height: 80)
+                    Spacer()
+                    Text("User rating")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    Spacer()
+                }.padding(.top)
                 
             }.padding(.horizontal)
-            
-            
         }
         .navigationTitle("\(movieFetcher.currentMovie.title)")
         .navigationBarTitleDisplayMode(.inline)
