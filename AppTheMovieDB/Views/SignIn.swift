@@ -29,7 +29,15 @@ struct SignIn: View {
                     .padding(.top,50)
                     
                 Button {
-                    movieFetcher.logIn()
+                    Task{
+                        do{
+                            try await movieFetcher.logIn()
+                        } catch FetchError.badRequest{
+                            movieFetcher.isError = true
+                        } catch {
+                            movieFetcher.isError = true
+                        }
+                    }
                 } label: {
                     Text("Go")
                         .frame(width: 180, height: 70)
