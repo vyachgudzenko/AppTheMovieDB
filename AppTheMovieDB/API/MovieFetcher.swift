@@ -99,7 +99,7 @@ class MovieFetcher:ObservableObject{
     
     @available(iOS 15.0, *)
     func logIn() async throws{
-        guard let urlToken = URL(string: URLConstans().requestTokenLink) else { return }
+        guard let urlToken = URL(string: URLConstans.requestTokenLink) else { return }
         let request = URLRequest(url: urlToken)
         let (dataToken,responseToken) = try await URLSession.shared.data(for: request)
         guard (responseToken as? HTTPURLResponse)?.statusCode == 200 else {
@@ -110,7 +110,7 @@ class MovieFetcher:ObservableObject{
         if requestToken == nil{
             throw FetchError.badJSON
         }
-        guard let urlAuth = URL(string: URLConstans().authWithLoginLink) else { return }
+        guard let urlAuth = URL(string: URLConstans.authWithLoginLink) else { return }
         let authInfo = AuthWithLogin(username: username, password: password, request_token: requestToken!)
         let authBody = try? JSONEncoder().encode(authInfo)
         var authRequest = URLRequest(url: urlAuth)
@@ -122,7 +122,7 @@ class MovieFetcher:ObservableObject{
             throw FetchError.badRequest
         }
         guard let authJSON = try? JSONDecoder().decode(ResponseRequestToken.self, from: dataAuth) else { throw FetchError.badJSON}
-        guard let urlSessionId = URL(string: URLConstans().sessionIdLink) else { return }
+        guard let urlSessionId = URL(string: URLConstans.sessionIdLink) else { return }
         let sessionInfo = RequestToken(request_token: requestToken!)
         let sessionBody = try? JSONEncoder().encode(sessionInfo)
         var sessionRequest = URLRequest(url: urlSessionId)
@@ -141,7 +141,7 @@ class MovieFetcher:ObservableObject{
     //отримуємо список фільмів
     @available(iOS 15.0, *)
     func fetchPage() async throws{
-        let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans().apiKey)&language=en-US&page=\(numberOfPage)"
+        let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans.apiKey)&language=en-US&page=\(numberOfPage)"
         guard let url = URL(string: urlString) else {return}
         let (data,response) = try await URLSession.shared.data(for: URLRequest(url: url))
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
@@ -153,7 +153,7 @@ class MovieFetcher:ObservableObject{
     
     @available(iOS 15.0, *)
     func fetchMovie(id:Int) async throws{
-        let urlString = "https://api.themoviedb.org/3/movie/\(id)?api_key=\(URLConstans().apiKey)&language=en-US"
+        let urlString = "https://api.themoviedb.org/3/movie/\(id)?api_key=\(URLConstans.apiKey)&language=en-US"
         guard let url = URL(string: urlString) else {return}
         let (data,response) = try await URLSession.shared.data(for: URLRequest(url: url))
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {throw FetchError.badRequest}

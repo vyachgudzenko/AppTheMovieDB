@@ -21,7 +21,7 @@ struct SignInTextAndSecureField: View {
     var body: some View{
         ZStack{
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color.init(ColorConstants().strokeColor),lineWidth: 2)
+                .stroke(Color.strokeColor,lineWidth: 2)
             if text.isEmpty{
                 Text(placeholderText)
                     .foregroundColor(.gray)

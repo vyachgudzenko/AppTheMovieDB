@@ -14,7 +14,7 @@ struct PageButtonModifier: ViewModifier{
             .foregroundColor(.black)
             .font(.body)
             .overlay {
-                Capsule().stroke(Color.init(ColorConstants().strokeColor))
+                Capsule().stroke(Color.strokeColor)
             }
     }
 }

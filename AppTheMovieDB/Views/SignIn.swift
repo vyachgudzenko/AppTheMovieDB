@@ -13,7 +13,7 @@ struct SignIn: View {
     
     var body: some View {
         ZStack{
-            Color.init(ColorConstants().backgoundColor).ignoresSafeArea(.all)
+            Color.backgoundColor.ignoresSafeArea(.all)
             VStack{
                 Image("logo")
                     .resizable()
@@ -41,7 +41,7 @@ struct SignIn: View {
                 } label: {
                     Text("Go")
                         .frame(width: 180, height: 70)
-                        .background(LinearGradient(colors: [.init(ColorConstants().startColor),.init(ColorConstants().endColor)], startPoint: .leading, endPoint: .trailing))
+                        .background(LinearGradient(colors: [Color.startColor,Color.endColor], startPoint: .leading, endPoint: .trailing))
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                         .foregroundColor(.white)
                         .padding(.top,50)

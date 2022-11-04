@@ -17,7 +17,7 @@ struct MovieDetail: View {
             ZStack{
                 HStack {
                     Spacer()
-                    AsyncImage(url: URL(string: URLConstans().backdropPath + movieFetcher.currentMovie.backdrop_path)) { image in
+                    AsyncImage(url: URL(string: URLConstans.backdropPath + movieFetcher.currentMovie.backdrop_path)) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -33,7 +33,7 @@ struct MovieDetail: View {
                 }
                 
                 HStack{
-                    AsyncImage(url: URL(string: URLConstans().posterPath + movieFetcher.currentMovie.poster_path!)) { image in
+                    AsyncImage(url: URL(string: URLConstans.posterPath + movieFetcher.currentMovie.poster_path!)) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
