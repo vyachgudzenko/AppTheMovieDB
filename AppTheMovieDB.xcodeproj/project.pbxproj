@@ -88,9 +88,9 @@
 		3E26047228C5597500ED90FE /* AppTheMovieDB */ = {
 			isa = PBXGroup;
 			children = (
+				3E2F01AB29156F6000B34445 /* Extensions */,
 				3E2F01B22915E7D600B34445 /* Protocols */,
 				3E2F01AE291573D700B34445 /* ViewModels */,
-				3E2F01AB29156F6000B34445 /* Extensions */,
 				3E4A709928C6D98000EE2131 /* Views */,
 				3E26048328C55E2F00ED90FE /* Models */,
 				3E26047328C5597500ED90FE /* AppTheMovieDBApp.swift */,

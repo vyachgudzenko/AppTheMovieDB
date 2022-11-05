@@ -6,26 +6,31 @@
 //
 
 import Foundation
-struct Preview:Codable,Hashable{
-    var adult:Bool
-    var backdrop_path:String
-    var genre_ids:[Int]
-    var id:Int
-    var original_language:String
-    var original_title:String
-    var overview:String
-    var popularity:Double
-    var poster_path:String
-    var release_date:String
-    var title:String
-    var video:Bool
-    var vote_average:Double
-    var vote_count:Int
-}
 
-struct Page:Codable{
+struct Page:Decodable{
     var page:Int
     var results:[Preview]
-    var total_pages:Int
-    var total_results:Int
+    var totalPages:Int
+    var totalResults:Int
+    
+    enum CodingKeys: String, CodingKey{
+        case page = "page"
+        case results = "results"
+        case totalPages = "total_pages"
+        case totalResults = "total_results"
+    }
+}
+
+extension Page{
+    struct Preview:Decodable,Hashable{
+        let id:Int
+        var posterPath:String
+        var title:String
+        
+        enum CodingKeys: String, CodingKey{
+            case id = "id"
+            case posterPath = "poster_path"
+            case title = "title"
+        }
+    }
 }

@@ -36,7 +36,7 @@ class Network:NetworkProtocol{
 
     func createRequest<T:Decodable>(urlStrng:String, typeOfData:T.Type) async throws -> T {
         guard let url = URL(string: urlStrng) else { throw FetchError.badURL }
-        var urlRequest = URLRequest(url: url)
+        let urlRequest = URLRequest(url: url)
         let (data,response) = try await URLSession.shared.data(for: urlRequest)
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw FetchError.badRequest

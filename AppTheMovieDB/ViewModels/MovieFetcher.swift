@@ -18,7 +18,7 @@ class MovieFetcher:ObservableObject{
             }
         }
     }
-    @Published var movies: [Preview] = []
+    @Published var movies: [Page.Preview] = []
     @Published var currentMovie:Movie = Movie.defaultMovie
     
     

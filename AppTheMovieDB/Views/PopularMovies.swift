@@ -20,7 +20,7 @@ struct PopularMovies: View {
     var body: some View {
         ScrollView{
             LazyVGrid(columns:columnsGrid,spacing: 10){
-                ForEach(movieFetcher.movies ,id: \.self){
+                ForEach(movieFetcher.movies ,id: \.id){
                     preview in
                     NavigationLink {
                         MovieDetail()
