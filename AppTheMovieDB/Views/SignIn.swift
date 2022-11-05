@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct SignIn: View {
-    
-    @EnvironmentObject var movieFetcher:MovieFetcher
+    @StateObject var authorizationVM = AuthoraizationViewModel()
+    @State var isError:Bool = false
+    @State var isLogin:Bool = false
     
     var body: some View {
         ZStack{
@@ -20,22 +21,23 @@ struct SignIn: View {
                     .aspectRatio(contentMode: .fit)
                     .padding(.top,100)
                 
-                SignInTextAndSecureField(text: $movieFetcher.username, placeholderText: "Enter your name", type: .textField)
+                SignInTextAndSecureField(text: $authorizationVM.username, placeholderText: "Enter your name", type: .textField)
                     .frame(height:70)
                     .padding(.top,50)
                     
-                SignInTextAndSecureField(text: $movieFetcher.password, placeholderText: "Enter your password", type: .secureField)
+                SignInTextAndSecureField(text: $authorizationVM.password, placeholderText: "Enter your password", type: .secureField)
                     .frame(height:70)
                     .padding(.top,50)
                     
                 Button {
                     Task{
                         do{
-                            try await movieFetcher.logIn()
-                        } catch FetchError.badRequest{
-                            movieFetcher.isError = true
+                            try await authorizationVM.logIn()
+                            if authorizationVM.sessionId != nil {
+                                isLogin = true
+                            }
                         } catch {
-                            movieFetcher.isError = true
+                            isError = true
                         }
                     }
                 } label: {
@@ -45,12 +47,12 @@ struct SignIn: View {
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                         .foregroundColor(.white)
                         .padding(.top,50)
-                }.fullScreenCover(isPresented: $movieFetcher.isLogin) {
+                }.fullScreenCover(isPresented: $isLogin) {
                     NavigationView{
                         PopularMovies()
                     }
                 }
-                .alert("Something went wrong. Check login and password",isPresented: $movieFetcher.isError){
+                .alert("Something went wrong. Check login and password",isPresented: $isError){
                     Button("OK", role: .cancel) {
                         
                     }

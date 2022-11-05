@@ -7,22 +7,22 @@
 
 import Foundation
 
-struct ResponseRequestToken:Codable{
+struct ResponseRequestToken:Decodable{
     var success:Bool
     var expires_at:String
     var request_token:String
 }
 
-struct ResponseSessionId:Codable{
+struct ResponseSessionId:Decodable{
     var success:Bool
     var session_id:String
 }
 
-struct RequestToken:Codable{
+struct RequestToken:Encodable{
     var request_token:String
 }
 
-struct AuthWithLogin:Codable{
+struct AuthWithLogin:Encodable{
     var username:String
     var password:String
     var request_token:String
