@@ -17,7 +17,7 @@ struct MovieDetail: View {
             ZStack{
                 HStack {
                     Spacer()
-                    AsyncImage(url: URL(string: URLConstans.backdropPath + movieFetcher.currentMovie.backdrop_path)) { image in
+                    AsyncImage(url: URL(string: URLConstans.backdropPath + movieFetcher.currentMovie.backdropPath)) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -33,7 +33,7 @@ struct MovieDetail: View {
                 }
                 
                 HStack{
-                    AsyncImage(url: URL(string: URLConstans.posterPath + movieFetcher.currentMovie.poster_path!)) { image in
+                    AsyncImage(url: URL(string: URLConstans.posterPath + movieFetcher.currentMovie.posterPath!)) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -116,7 +116,7 @@ struct MovieDetail: View {
                 }.padding(.top)
                 //Vote
                 HStack {
-                    CircleProgressBar(vote: Float(movieFetcher.currentMovie.vote_average))
+                    CircleProgressBar(vote: Float(movieFetcher.currentMovie.voteAverage))
                         .frame(width: 80, height: 80)
                     Spacer()
                     Text("User rating")
@@ -132,7 +132,7 @@ struct MovieDetail: View {
     }
     
     private func getYearRelease() -> String{
-        let dateRelease = movieFetcher.currentMovie.release_date
+        let dateRelease = movieFetcher.currentMovie.releaseDate
         let firstSlash = dateRelease.firstIndex(of: "-")!
         let year = dateRelease[..<firstSlash]
         return String(year)
