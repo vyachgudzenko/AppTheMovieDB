@@ -21,10 +21,6 @@ class MovieFetcher:Network,ObservableObject{
     @Published var movies: [Page.Preview] = []
     @Published var currentMovie:Movie = Movie.defaultMovie
     
-    
-    
-    
-    //отримуємо список фільмів
     func fetchPage() async throws{
         let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans.apiKey)&language=en-US&page=\(numberOfPage)"
         movies = try await createRequest(urlStrng: urlString, typeOfData: Page.self).results

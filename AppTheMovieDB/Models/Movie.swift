@@ -23,6 +23,16 @@ struct Movie:Decodable{
     var title:String
     var voteAverage:Double
     
+    var readebleTime:String{
+        let stringTime:String = "\(runtime / 60)h \(runtime % 60)m"
+        return stringTime
+    }
+    var releaseYear:String{
+        let firstSlash = releaseDate.firstIndex(of: "-")!
+        let year = releaseDate[..<firstSlash]
+        return String(year)
+    }
+    
     static let defaultMovie = Movie(
         backdropPath: "/bvpI11RJbE6lHSWCrhvNC1S1MtO.jpg",
         budget: 94000000, genres: [Genre(id: 16, name: "Animation"), Genre(id: 10751, name: "Family")],

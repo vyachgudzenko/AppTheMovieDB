@@ -88,12 +88,12 @@ struct MovieDetail: View {
                 HStack{
                     VStack{
                         TitleText(text: "Year")
-                        Text(getYearRelease())
+                        Text(movieFetcher.currentMovie.releaseYear)
                     }
                     Spacer()
                     VStack{
                         TitleText(text:"Time")
-                        Text(getReadableTime(minute:movieFetcher.currentMovie.runtime))
+                        Text(movieFetcher.currentMovie.readebleTime)
                     }
                     Spacer()
                     VStack{
@@ -131,17 +131,7 @@ struct MovieDetail: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     
-    private func getYearRelease() -> String{
-        let dateRelease = movieFetcher.currentMovie.releaseDate
-        let firstSlash = dateRelease.firstIndex(of: "-")!
-        let year = dateRelease[..<firstSlash]
-        return String(year)
-    }
     
-    private func getReadableTime(minute:Int) -> String{
-        let stringTime = "\(minute / 60)h \(minute % 60)m"
-        return stringTime
-    }
 }
 
 struct MovieDetail_Previews: PreviewProvider {
