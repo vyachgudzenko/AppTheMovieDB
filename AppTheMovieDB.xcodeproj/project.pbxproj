@@ -88,6 +88,7 @@
 		3E26047228C5597500ED90FE /* AppTheMovieDB */ = {
 			isa = PBXGroup;
 			children = (
+				3E33A02F29185E0F009F1418 /* Network */,
 				3E2F01AB29156F6000B34445 /* Extensions */,
 				3E2F01B22915E7D600B34445 /* Protocols */,
 				3E2F01AE291573D700B34445 /* ViewModels */,
@@ -134,7 +135,6 @@
 			children = (
 				3E4A709728C6CE6700EE2131 /* URLConstans.swift */,
 				3E26048928C6629600ED90FE /* MovieFetcher.swift */,
-				3E2F01AF2915782A00B34445 /* Network.swift */,
 				3E2F01B72915E8BA00B34445 /* AuthorizationViewModel.swift */,
 			);
 			path = ViewModels;
@@ -164,6 +164,14 @@
 				3E30AC4328C94E510066CB55 /* CircleProgressBar.swift */,
 			);
 			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		3E33A02F29185E0F009F1418 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				3E2F01AF2915782A00B34445 /* Network.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		3E437DC328C6E876001F604D /* Helpers */ = {
