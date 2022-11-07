@@ -9,21 +9,46 @@ import Foundation
 
 struct ResponseRequestToken:Decodable{
     var success:Bool
-    var expires_at:String
-    var request_token:String
+    var expiresAt:String
+    var requestToken:String
+    
+    enum CodingKeys: String, CodingKey{
+        case success
+        case expiresAt = "expires_at"
+        case requestToken = "request_token"
+    }
+        
 }
 
 struct ResponseSessionId:Decodable{
     var success:Bool
-    var session_id:String
+    var sessionId:String
+    
+    enum CodingKeys: String, CodingKey{
+        case success
+        case sessionId = "session_id"
+    }
 }
 
-struct RequestToken:Encodable{
-    var request_token:String
+struct RequestToken:Codable{
+    var requestToken:String
+    enum CodingKeys: String, CodingKey{
+        case requestToken = "request_token"
+    }
+    
+    
 }
 
 struct AuthWithLogin:Encodable{
     var username:String
     var password:String
-    var request_token:String
+    var requestToken:String
+    
+    enum CodingKeys: String, CodingKey{
+        case username
+        case password
+        case requestToken = "request_token"
+    }
+    
+    
 }
