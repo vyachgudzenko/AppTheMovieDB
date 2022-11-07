@@ -23,11 +23,11 @@ class MovieFetcher:Network,ObservableObject{
     
     func fetchPage() async throws{
         let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans.apiKey)&language=en-US&page=\(numberOfPage)"
-        movies = try await createRequest(urlStrng: urlString, typeOfData: Page.self).results
+        movies = try await createRequest(urlString: urlString, typeOfData: Page.self).results
     }
     
     func fetchMovie(id:Int) async throws{
         let urlString = "https://api.themoviedb.org/3/movie/\(id)?api_key=\(URLConstans.apiKey)&language=en-US"
-        currentMovie = try await createRequest(urlStrng: urlString, typeOfData: Movie.self)
+        currentMovie = try await createRequest(urlString: urlString, typeOfData: Movie.self)
     }
 }
