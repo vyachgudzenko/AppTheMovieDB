@@ -19,23 +19,30 @@ struct PopularMovies: View {
     ]
     
     var body: some View {
-        VStack{
-            
-            Text("Popular Movies")
-                .font(.system(size: 30))
-                .fontWeight(.semibold)
-                .offset(y:50)
+        ZStack {
+            VStack{
                 
-            
-            CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies, id: \.id, destination: {
-                MovieDetail(showDetail: $showDetailMovie)
-            }, content: { movie, cardSize in
-                MovieCard(preview: movie)
-                    .frame(height: cardSize.height * 0.5)
-            },swipeLastElement: {
-                movieFetcher.numberOfPage += 1
-            })
-            .padding(.vertical)
+                Text("Popular Movies")
+                    .font(.system(size: 30))
+                    .fontWeight(.semibold)
+                    .offset(y:50)
+                
+                
+                CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies, id: \.id, destination: {
+                    MovieDetail(showDetail: $showDetailMovie)
+                }, content: { movie, cardSize in
+                    MovieCard(preview: movie)
+                        .frame(height: cardSize.height * 0.5)
+                },swipeLastElement: {
+                    movieFetcher.numberOfPage += 1
+                })
+                .padding(.vertical)
+                    
+            }
+            MovieDetail(showDetail: $showDetailMovie)
+                .offset( x: showDetailMovie ? 0 :size.width)
+                .rotationEffect(.degrees(showDetailMovie ? 0 : 45), anchor: .bottom)
+                .animation(.easeInOut(duration: 0.5), value: showDetailMovie)
             
         }
         .task {

@@ -60,9 +60,6 @@ struct CustomCarousel<Content:View,DestinationView:View,Item,ID>: View where Ite
                             currentId = movie.id as! Int
                             showDetail = true
                         }
-                        .fullScreenCover(isPresented: $showDetail) {
-                            destination
-                        }
                 }
             }
             .padding(.horizontal,spacing)
@@ -83,7 +80,6 @@ struct CustomCarousel<Content:View,DestinationView:View,Item,ID>: View where Ite
         .padding(.top,60)
         .onAppear(
             perform: {
-                //let extraSpace = (cardPadding / 2) - spacing
                 offset = extraSpace
                 lastStoredOffset = extraSpace
             }
@@ -122,15 +118,15 @@ struct CustomCarousel<Content:View,DestinationView:View,Item,ID>: View where Ite
     }
     
     private func onChanged(value:DragGesture.Value,cardWidth:CGFloat){
-        
         let translationX = value.translation.width
+        if index == items.count - 1 && translationX < 0{
+            swipeLastElement()
+        }
         offset = translationX + lastStoredOffset
         
         let progress = offset / cardWidth
         rotation = (progress * 5)
-        if index == items.count - 1 && translationX < 0{
-            swipeLastElement()
-        }
+        
         
     }
     
