@@ -20,7 +20,7 @@ struct MovieCard: View {
                     .background(Color.gray)
                     .foregroundColor(.gray)
             } placeholder: {
-                Image(systemName: "photo")
+                Image("duna")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(.red)
@@ -39,6 +39,7 @@ struct MovieCard: View {
                 }
             }
         }
+        .clipShape(RoundedRectangle(cornerRadius: 15))
     }
 }
 

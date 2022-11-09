@@ -9,7 +9,8 @@ import SwiftUI
 
 struct PopularMovies: View {
     @EnvironmentObject var movieFetcher:MovieFetcher
-    
+    @State private var index:Int = 0
+    @State private var showDetailMovie:Bool = false
     let size = UIScreen.main.bounds.size
     
     let columnsGrid:[GridItem] = [
@@ -18,53 +19,34 @@ struct PopularMovies: View {
     ]
     
     var body: some View {
-        ScrollView{
-            LazyVGrid(columns:columnsGrid,spacing: 10){
-                ForEach(movieFetcher.movies ,id: \.id){
-                    preview in
-                    NavigationLink {
-                        MovieDetail()
-                            .task {
-                                try? await movieFetcher.fetchMovie(id: preview.id)
-                            }
-                    } label: {
-                        MovieCard(preview: preview)
-                            .cornerRadius(20)
-                            .padding(.all,5)
-                            .shadow(color: .black.opacity(0.5), radius: 6, x: 5, y: 5)
-                    }
-                }
-            }
-            HStack {
-                if movieFetcher.numberOfPage > 1{
-                    Button {
-                        movieFetcher.numberOfPage -= 1
-                    } label: {
-                        Text("Previus")
-                            .modifier(PageButtonModifier())
-                    }
-                }
-                Text("\(movieFetcher.numberOfPage)")
-                    .font(.title)
-                    .padding(.horizontal)
-                Button {
-                    movieFetcher.numberOfPage += 1
-                } label: {
-                    Text("Next")
-                        .modifier(PageButtonModifier())
-                }
-            }
+        VStack{
+            
+            Text("Popular Movies")
+                .font(.system(size: 30))
+                .fontWeight(.semibold)
+                .offset(y:50)
+                
+            
+            CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies, id: \.id, destination: {
+                MovieDetail(showDetail: $showDetailMovie)
+            }, content: { movie, cardSize in
+                MovieCard(preview: movie)
+                    .frame(height: cardSize.height * 0.5)
+            },swipeLastElement: {
+                movieFetcher.numberOfPage += 1
+            })
+            .padding(.vertical)
+            
         }
         .task {
-            try? await movieFetcher.fetchPage()
+            movieFetcher.movies = try! await movieFetcher.fetchPage()
         }
-        .navigationTitle("Popular Movies")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 struct PopularMovies_Previews: PreviewProvider {
     static var previews: some View {
         PopularMovies()
+            .environmentObject(MovieFetcher())
     }
 }

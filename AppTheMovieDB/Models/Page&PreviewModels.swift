@@ -22,7 +22,7 @@ struct Page:Decodable{
 }
 
 extension Page{
-    struct Preview:Decodable,Hashable{
+    struct Preview:Decodable,Hashable,Equatable,Identifiable{
         let id:Int
         var posterPath:String
         var title:String

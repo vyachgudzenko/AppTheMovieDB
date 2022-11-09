@@ -25,6 +25,7 @@
 		3E2F01B82915E8BA00B34445 /* AuthorizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2F01B72915E8BA00B34445 /* AuthorizationViewModel.swift */; };
 		3E30AC4228C937C90066CB55 /* TitleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E30AC4128C937C90066CB55 /* TitleText.swift */; };
 		3E30AC4428C94E510066CB55 /* CircleProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E30AC4328C94E510066CB55 /* CircleProgressBar.swift */; };
+		3E3C596E2919E0E80085E824 /* CustomCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3C596D2919E0E80085E824 /* CustomCarousel.swift */; };
 		3E437DC228C6DA48001F604D /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E437DC128C6DA48001F604D /* SignIn.swift */; };
 		3E437DC528C6E899001F604D /* SignInTextAndSecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E437DC428C6E899001F604D /* SignInTextAndSecureField.swift */; };
 		3E4A709828C6CE6700EE2131 /* URLConstans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4A709728C6CE6700EE2131 /* URLConstans.swift */; };
@@ -52,6 +53,7 @@
 		3E2F01B72915E8BA00B34445 /* AuthorizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewModel.swift; sourceTree = "<group>"; };
 		3E30AC4128C937C90066CB55 /* TitleText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleText.swift; sourceTree = "<group>"; };
 		3E30AC4328C94E510066CB55 /* CircleProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgressBar.swift; sourceTree = "<group>"; };
+		3E3C596D2919E0E80085E824 /* CustomCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCarousel.swift; sourceTree = "<group>"; };
 		3E437DC128C6DA48001F604D /* SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignIn.swift; sourceTree = "<group>"; };
 		3E437DC428C6E899001F604D /* SignInTextAndSecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInTextAndSecureField.swift; sourceTree = "<group>"; };
 		3E4A709728C6CE6700EE2131 /* URLConstans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConstans.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				3E437DC428C6E899001F604D /* SignInTextAndSecureField.swift */,
 				3E30AC4128C937C90066CB55 /* TitleText.swift */,
 				3E30AC4328C94E510066CB55 /* CircleProgressBar.swift */,
+				3E3C596D2919E0E80085E824 /* CustomCarousel.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				3E2F01B62915E85F00B34445 /* NetworkProtocols.swift in Sources */,
 				3E13260C28C7F4DC00A576F6 /* MovieCard.swift in Sources */,
 				3E26048C28C6674D00ED90FE /* APIStructurs.swift in Sources */,
+				3E3C596E2919E0E80085E824 /* CustomCarousel.swift in Sources */,
 				3E26048A28C6629600ED90FE /* MovieFetcher.swift in Sources */,
 				3E30AC4428C94E510066CB55 /* CircleProgressBar.swift in Sources */,
 				3E437DC228C6DA48001F604D /* SignIn.swift in Sources */,

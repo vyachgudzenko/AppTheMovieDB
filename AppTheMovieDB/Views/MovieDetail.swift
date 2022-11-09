@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct MovieDetail: View {
-    
     @EnvironmentObject var movieFetcher:MovieFetcher
+    @Binding var showDetail:Bool
     
     var body: some View {
         ScrollView{
+            HStack(alignment: .center) {
+                Button {
+                    showDetail.toggle()
+                } label: {
+                    Text("Done")
+                }
+                Spacer()
+                Spacer()
+            }.padding(.horizontal)
             //Image
             ZStack{
                 HStack {
@@ -136,6 +145,6 @@ struct MovieDetail: View {
 
 struct MovieDetail_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetail()
+        MovieDetail(showDetail: .constant(true))
     }
 }
