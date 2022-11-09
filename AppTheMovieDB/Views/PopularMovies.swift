@@ -41,8 +41,18 @@ struct PopularMovies: View {
             }
             MovieDetail(showDetail: $showDetailMovie)
                 .offset( x: showDetailMovie ? 0 :size.width)
-                .rotationEffect(.degrees(showDetailMovie ? 0 : 45), anchor: .bottom)
+               .rotationEffect(.degrees(showDetailMovie ? 0 : 45), anchor: .bottom)
+                .opacity(showDetailMovie ? 1 : 0)
                 .animation(.easeInOut(duration: 0.5), value: showDetailMovie)
+                .gesture(
+                    DragGesture(minimumDistance: 5)
+                        .onChanged({ value in
+                            var offsetX = value.translation.width
+                            if offsetX > 20{
+                                showDetailMovie.toggle()
+                            }
+                        })
+                )
             
         }
         .task {

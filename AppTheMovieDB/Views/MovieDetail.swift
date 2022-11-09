@@ -25,46 +25,7 @@ struct MovieDetail: View {
                     Spacer()
                 }.padding(.horizontal)
                 //Image
-                ZStack{
-                    HStack {
-                        Spacer()
-                        AsyncImage(url: URL(string: URLConstans.backdropPath + movieFetcher.currentMovie.backdropPath)) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 200)
-                        } placeholder: {
-                            Image("logo")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.red)
-                                .frame(height: 200)
-                        }
-                        .mask(LinearGradient(colors: [.white,.white,.clear], startPoint: .trailing, endPoint: .leading))
-                    }
-                    
-                    HStack{
-                        AsyncImage(url: URL(string: URLConstans.posterPath + movieFetcher.currentMovie.posterPath!)) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 150 )
-                                .cornerRadius(10)
-                                .padding(.leading,30)
-                                    
-                        } placeholder: {
-                            Rectangle()
-                                .frame(width: 100, height: 200)
-                                .blur(radius: 10)
-                                .background(Color.white)
-                                .foregroundColor(.white)
-                            Spacer()
-                        }
-
-                        Spacer()
-                    }
-                    
-                }
+                imageHeader()
                 VStack{
                     //Title
                     Text("\(movieFetcher.currentMovie.title)")
@@ -138,6 +99,50 @@ struct MovieDetail: View {
                     
                 }.padding(.horizontal)
             }
+        }
+        
+    }
+    @ViewBuilder
+    private func imageHeader() -> some View{
+        ZStack{
+            HStack {
+                Spacer()
+                AsyncImage(url: URL(string: URLConstans.backdropPath + movieFetcher.currentMovie.backdropPath)) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 200)
+                } placeholder: {
+                    Image("logo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(.red)
+                        .frame(height: 200)
+                }
+                .mask(LinearGradient(colors: [.white,.white,.clear], startPoint: .trailing, endPoint: .leading))
+            }
+            
+            HStack{
+                AsyncImage(url: URL(string: URLConstans.posterPath + movieFetcher.currentMovie.posterPath!)) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 150 )
+                        .cornerRadius(10)
+                        .padding(.leading,30)
+                            
+                } placeholder: {
+                    Rectangle()
+                        .frame(width: 100, height: 200)
+                        .blur(radius: 10)
+                        .background(Color.white)
+                        .foregroundColor(.white)
+                    Spacer()
+                }
+
+                Spacer()
+            }
+            
         }
     }
     
