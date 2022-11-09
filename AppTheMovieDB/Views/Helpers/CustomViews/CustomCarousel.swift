@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-struct CustomCarousel<Content:View,DestinationView:View,Item,ID>: View where Item:RandomAccessCollection,ID:Hashable,Item.Element:Equatable,Item.Element:Identifiable {
+struct CustomCarousel<Content:View,DestinationView:View,Item>: View where Item:RandomAccessCollection,Item.Element:Equatable,Item.Element:Identifiable {
     var content:(Item.Element,CGSize) -> Content
     var destination:DestinationView
-    var id:KeyPath<Item.Element,ID>
     var spacing:CGFloat
     var cardPadding:CGFloat
     var items:Item
@@ -23,10 +22,9 @@ struct CustomCarousel<Content:View,DestinationView:View,Item,ID>: View where Ite
         return (cardPadding / 2) - spacing
     }
     
-    init(index:Binding<Int>, currentId:Binding<Int>,showDetail:Binding<Bool>,items:Item,spacing:CGFloat = 20,cardPadding:CGFloat = 150,id: KeyPath<Item.Element, ID>,@ViewBuilder destination:() -> DestinationView, @ViewBuilder content: @escaping (Item.Element,CGSize) -> Content,swipeLastElement: @escaping () -> Void = {}) {
+    init(index:Binding<Int>, currentId:Binding<Int>,showDetail:Binding<Bool>,items:Item,spacing:CGFloat = 20,cardPadding:CGFloat = 150,@ViewBuilder destination:() -> DestinationView, @ViewBuilder content: @escaping (Item.Element,CGSize) -> Content,swipeLastElement: @escaping () -> Void = {}) {
         self.content = content
         self.destination = destination()
-        self.id = id
         self._index = index
         self.spacing = spacing
         self.cardPadding = cardPadding
@@ -47,7 +45,7 @@ struct CustomCarousel<Content:View,DestinationView:View,Item,ID>: View where Ite
             let size = geo.size
             let cardWidth = size.width - (cardPadding - spacing)
             LazyHStack(spacing: spacing) {
-                ForEach(items, id: id) { movie in
+                ForEach(items, id: \.id) { movie in
                     let index = indexOf(item: movie)
                     content(movie,CGSize(width: size.width - cardPadding, height: size.height))
                         .frame(width: size.width - cardPadding,height: size.height)
@@ -55,10 +53,10 @@ struct CustomCarousel<Content:View,DestinationView:View,Item,ID>: View where Ite
                         .rotationEffect(.degrees(rotation),anchor: .bottom)
                         .offset(y:offsetY(index: index, cardWidth: cardWidth))
                         .onTapGesture {
-                            print("index \(index)")
-                            print("count \(items.count)")
                             currentId = movie.id as! Int
-                            showDetail = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200), execute: {
+                                showDetail = true
+                            })
                         }
                 }
             }

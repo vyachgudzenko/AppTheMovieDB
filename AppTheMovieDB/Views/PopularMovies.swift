@@ -28,7 +28,7 @@ struct PopularMovies: View {
                     .offset(y:50)
                 
                 
-                CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies, id: \.id, destination: {
+                CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies, destination: {
                     MovieDetail(showDetail: $showDetailMovie)
                 }, content: { movie, cardSize in
                     MovieCard(preview: movie)
