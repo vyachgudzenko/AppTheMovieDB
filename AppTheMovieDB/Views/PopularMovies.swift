@@ -20,25 +20,25 @@ struct PopularMovies: View {
     
     var body: some View {
         GeometryReader { geo in
-            ZStack {
+            ZStack(alignment:.center) {
+                
                 VStack{
-                    
                     
                     CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies,cardPadding: geo.size.height * 0.2, destination: {
                         MovieDetail(showDetail: $showDetailMovie)
                     }, content: { movie, cardSize in
                         MovieCard(preview: movie)
-                            
+                        
                     },swipeLastElement: {
                         movieFetcher.numberOfPage += 1
                     })
                     .frame(height: geo.size.height * 0.5)
                     .padding(.vertical)
-                        
+                    
                 }
                 MovieDetail(showDetail: $showDetailMovie)
                     .offset( x: showDetailMovie ? 0 :size.width)
-                   .rotationEffect(.degrees(showDetailMovie ? 0 : 45), anchor: .bottom)
+                    .rotationEffect(.degrees(showDetailMovie ? 0 : 45), anchor: .bottom)
                     .opacity(showDetailMovie ? 1 : 0)
                     .animation(.easeInOut(duration: 0.5), value: showDetailMovie)
                     .gesture(
@@ -50,7 +50,6 @@ struct PopularMovies: View {
                                 }
                             })
                     )
-                
             }
             .task {
                 movieFetcher.movies = try! await movieFetcher.fetchPage()

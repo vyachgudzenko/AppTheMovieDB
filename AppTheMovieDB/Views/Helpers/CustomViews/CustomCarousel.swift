@@ -117,9 +117,7 @@ struct CustomCarousel<Content:View,DestinationView:View,Item>: View where Item:R
     
     private func onChanged(value:DragGesture.Value,cardWidth:CGFloat){
         let translationX = value.translation.width
-        if index == items.count - 1 && translationX < 0{
-            swipeLastElement()
-        }
+        
         offset = translationX + lastStoredOffset
         
         let progress = offset / cardWidth
@@ -138,6 +136,9 @@ struct CustomCarousel<Content:View,DestinationView:View,Item>: View where Item:R
             offset = (cardWidth * localIndex) + extraSpace
             let progress = offset / cardWidth
             rotation = (progress * 5).rounded() - 1
+            if index == items.count - 1 {
+                swipeLastElement()
+            }
         }
         lastStoredOffset = offset
     }
