@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Movie:Decodable{
+struct Movie:Decodable,Equatable{
     var backdropPath:String
     var budget:Int
     var genres:[Genre]
