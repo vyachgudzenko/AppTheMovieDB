@@ -22,7 +22,7 @@ struct CustomCarousel<Content:View,DestinationView:View,Item>: View where Item:R
         return (cardPadding / 2) - spacing
     }
     
-    init(index:Binding<Int>, currentId:Binding<Int>,showDetail:Binding<Bool>,items:Item,spacing:CGFloat = 20,cardPadding:CGFloat = 150,@ViewBuilder destination:() -> DestinationView, @ViewBuilder content: @escaping (Item.Element,CGSize) -> Content,swipeLastElement: @escaping () -> Void = {}) {
+    init(index:Binding<Int>, currentId:Binding<Int>,showDetail:Binding<Bool>,items:Item,spacing:CGFloat = 20,cardPadding:CGFloat = 200,@ViewBuilder destination:() -> DestinationView, @ViewBuilder content: @escaping (Item.Element,CGSize) -> Content,swipeLastElement: @escaping () -> Void = {}) {
         self.content = content
         self.destination = destination()
         self._index = index

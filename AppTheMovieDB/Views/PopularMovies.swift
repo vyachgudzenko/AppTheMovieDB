@@ -19,44 +19,42 @@ struct PopularMovies: View {
     ]
     
     var body: some View {
-        ZStack {
-            VStack{
-                
-                Text("Popular Movies")
-                    .font(.system(size: 30))
-                    .fontWeight(.semibold)
-                    .offset(y:50)
-                
-                
-                CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies, destination: {
-                    MovieDetail(showDetail: $showDetailMovie)
-                }, content: { movie, cardSize in
-                    MovieCard(preview: movie)
-                        .frame(height: cardSize.height * 0.5)
-                },swipeLastElement: {
-                    movieFetcher.numberOfPage += 1
-                })
-                .padding(.vertical)
+        GeometryReader { geo in
+            ZStack {
+                VStack{
                     
+                    
+                    CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies,cardPadding: geo.size.height * 0.2, destination: {
+                        MovieDetail(showDetail: $showDetailMovie)
+                    }, content: { movie, cardSize in
+                        MovieCard(preview: movie)
+                            
+                    },swipeLastElement: {
+                        movieFetcher.numberOfPage += 1
+                    })
+                    .frame(height: geo.size.height * 0.5)
+                    .padding(.vertical)
+                        
+                }
+                MovieDetail(showDetail: $showDetailMovie)
+                    .offset( x: showDetailMovie ? 0 :size.width)
+                   .rotationEffect(.degrees(showDetailMovie ? 0 : 45), anchor: .bottom)
+                    .opacity(showDetailMovie ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.5), value: showDetailMovie)
+                    .gesture(
+                        DragGesture(minimumDistance: 5)
+                            .onChanged({ value in
+                                let offsetX = value.translation.width
+                                if offsetX > 5{
+                                    showDetailMovie.toggle()
+                                }
+                            })
+                    )
+                
             }
-            MovieDetail(showDetail: $showDetailMovie)
-                .offset( x: showDetailMovie ? 0 :size.width)
-               .rotationEffect(.degrees(showDetailMovie ? 0 : 45), anchor: .bottom)
-                .opacity(showDetailMovie ? 1 : 0)
-                .animation(.easeInOut(duration: 0.5), value: showDetailMovie)
-                .gesture(
-                    DragGesture(minimumDistance: 5)
-                        .onChanged({ value in
-                            var offsetX = value.translation.width
-                            if offsetX > 20{
-                                showDetailMovie.toggle()
-                            }
-                        })
-                )
-            
+            .task {
+                movieFetcher.movies = try! await movieFetcher.fetchPage()
         }
-        .task {
-            movieFetcher.movies = try! await movieFetcher.fetchPage()
         }
     }
 }
