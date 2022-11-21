@@ -11,13 +11,7 @@ import SwiftUI
 
 //@MainActor
 class MovieFetcher:Network,ObservableObject{
-    @Published var numberOfPage:Int = 1{
-        didSet{
-            Task{
-                try await addNextPage()
-            }
-        }
-    }
+    @Published var numberOfPage:Int = 1
     
     @Published var movies: [Page.Preview] = []
     @Published var currentMovie:Movie = Movie.defaultMovie

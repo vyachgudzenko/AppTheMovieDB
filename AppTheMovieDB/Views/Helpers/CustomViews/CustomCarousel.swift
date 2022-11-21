@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-struct CustomCarousel<Content:View,DestinationView:View,Item>: View where Item:RandomAccessCollection,Item.Element:Equatable,Item.Element:Identifiable {
+struct CustomCarousel<Content:View,Item>: View where Item:RandomAccessCollection,Item.Element:Equatable,Item.Element:Identifiable {
     var content:(Item.Element,CGSize) -> Content
-    var destination:DestinationView
     var spacing:CGFloat
     var cardPadding:CGFloat
     var items:Item
@@ -22,9 +21,8 @@ struct CustomCarousel<Content:View,DestinationView:View,Item>: View where Item:R
         return (cardPadding / 2) - spacing
     }
     
-    init(index:Binding<Int>, currentId:Binding<Int>,showDetail:Binding<Bool>,items:Item,spacing:CGFloat = 20,cardPadding:CGFloat = 200,@ViewBuilder destination:() -> DestinationView, @ViewBuilder content: @escaping (Item.Element,CGSize) -> Content,swipeLastElement: @escaping () -> Void = {}) {
+    init(index:Binding<Int>, currentId:Binding<Int>,showDetail:Binding<Bool>,items:Item,spacing:CGFloat = 20,cardPadding:CGFloat = 200, @ViewBuilder content: @escaping (Item.Element,CGSize) -> Content,swipeLastElement: @escaping () -> Void = {}) {
         self.content = content
-        self.destination = destination()
         self._index = index
         self.spacing = spacing
         self.cardPadding = cardPadding

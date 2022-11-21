@@ -11,12 +11,6 @@ struct PopularMovies: View {
     @EnvironmentObject var movieFetcher:MovieFetcher
     @State private var index:Int = 0
     @State private var showDetailMovie:Bool = false
-    let size = UIScreen.main.bounds.size
-    
-    let columnsGrid:[GridItem] = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
     
     var body: some View {
         GeometryReader { geo in
@@ -24,20 +18,24 @@ struct PopularMovies: View {
                 
                 VStack{
                     
-                    CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies,cardPadding: geo.size.height * 0.2, destination: {
-                        MovieDetail(showDetail: $showDetailMovie)
-                    }, content: { movie, cardSize in
+                    CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies,cardPadding: geo.size.height * 0.2, content: { movie, cardSize in
                         MovieCard(preview: movie)
                         
                     },swipeLastElement: {
                         movieFetcher.numberOfPage += 1
+                        DispatchQueue.main.async {
+                            Task {
+                               try await movieFetcher.addNextPage()
+                            }
+                        }
+                            
                     })
-                    .frame(height: geo.size.height * 0.5)
+                    .frame(height: geo.size.height * 0.58)
                     .padding(.vertical)
                     
                 }
                 MovieDetail(showDetail: $showDetailMovie)
-                    .offset( x: showDetailMovie ? 0 :size.width)
+                    .offset( x: showDetailMovie ? 0 :geo.size.width)
                     .rotationEffect(.degrees(showDetailMovie ? 0 : 45), anchor: .bottom)
                     .opacity(showDetailMovie ? 1 : 0)
                     .animation(.easeInOut(duration: 0.5), value: showDetailMovie)
