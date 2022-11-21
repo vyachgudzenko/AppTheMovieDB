@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct PopularMovies: View {
     @EnvironmentObject var movieFetcher:MovieFetcher
@@ -22,12 +23,7 @@ struct PopularMovies: View {
                         MovieCard(preview: movie)
                         
                     },swipeLastElement: {
-                        movieFetcher.numberOfPage += 1
-                        DispatchQueue.main.async {
-                            Task {
-                               try await movieFetcher.addNextPage()
-                            }
-                        }
+                        movieFetcher.addNextPage()
                             
                     })
                     .frame(height: geo.size.height * 0.58)
@@ -50,7 +46,8 @@ struct PopularMovies: View {
                     )
             }
             .task {
-                movieFetcher.movies = try! await movieFetcher.fetchPage()
+                movieFetcher.fetchPage()
+                    
         }
         }
     }
