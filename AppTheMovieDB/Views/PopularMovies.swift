@@ -21,6 +21,11 @@ struct PopularMovies: View {
                     
                     CustomCarousel(index: $index,currentId: $movieFetcher.currentId, showDetail: $showDetailMovie, items: movieFetcher.movies,cardPadding: geo.size.height * 0.2, content: { movie, cardSize in
                         MovieCard(preview: movie)
+                            .onTapGesture {
+                                movieFetcher.currentId = movie.id
+                                movieFetcher.fetchMovie()
+                                showDetailMovie = true
+                            }
                         
                     },swipeLastElement: {
                         movieFetcher.addNextPage()

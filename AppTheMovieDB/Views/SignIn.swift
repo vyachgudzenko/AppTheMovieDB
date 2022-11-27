@@ -30,16 +30,7 @@ struct SignIn: View {
                     .padding(.top,50)
                     
                 Button {
-                    Task{
-                        do{
-                            try await authorizationVM.logIn()
-                            if authorizationVM.sessionId != nil {
-                                isLogin = true
-                            }
-                        } catch {
-                            isError = true
-                        }
-                    }
+                    authorizationVM.logIn()
                 } label: {
                     Text("Go")
                         .frame(width: 180, height: 70)
@@ -47,7 +38,7 @@ struct SignIn: View {
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                         .foregroundColor(.white)
                         .padding(.top,50)
-                }.fullScreenCover(isPresented: $isLogin) {
+                }.fullScreenCover(isPresented: $authorizationVM.isLogin) {
                     NavigationView{
                         PopularMovies()
                     }

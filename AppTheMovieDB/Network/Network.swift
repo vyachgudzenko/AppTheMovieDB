@@ -42,6 +42,7 @@ class CombineNetwork:NetworkCombineProtocol{
         var urlRequest = URLRequest(url: url)
         if !(params is EmptyParams){
             let httpBody = try? JSONEncoder().encode(params)
+            print(httpBody)
             urlRequest.httpBody = httpBody
             urlRequest.httpMethod = "POST"
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -63,32 +64,8 @@ class CombineNetwork:NetworkCombineProtocol{
                     }
                     return FetchError.genericError(error.localizedDescription)
                 }
+                .receive(on: RunLoop.main)
                 .eraseToAnyPublisher()
-    }
-    
-}
-
-class Network:NetworkProtocol{
-    
-    struct EmptyParams:Encodable {}
-    
-    func createRequest<T:Decodable,P:Encodable>(urlString:String, params:P = EmptyParams(), typeOfData: T.Type) async throws -> T {
-        guard let url = URL(string: urlString) else { throw FetchError.badURL }
-        var urlRequest = URLRequest(url: url)
-        
-        if !(params is EmptyParams){
-            let httpBody = try? JSONEncoder().encode(params)
-            urlRequest.httpBody = httpBody
-            urlRequest.httpMethod = "POST"
-            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        }
-        
-        let (data,response) = try await URLSession.shared.data(for: urlRequest)
-        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
-            throw FetchError.badRequest((response as? HTTPURLResponse)!.statusCode)
-        }
-        guard let dataFromJSON = try? JSONDecoder().decode(T.self, from: data) else { throw FetchError.badJSON}
-        return dataFromJSON
     }
     
 }
