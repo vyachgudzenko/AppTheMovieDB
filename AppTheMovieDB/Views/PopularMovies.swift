@@ -24,6 +24,7 @@ struct PopularMovies: View {
                             .onTapGesture {
                                 movieFetcher.currentId = movie.id
                                 movieFetcher.fetchMovie()
+                                print(movieFetcher.currentMovie.title)
                                 showDetailMovie = true
                             }
                         
@@ -49,9 +50,12 @@ struct PopularMovies: View {
                                 }
                             })
                     )
+                    .onReceive(movieFetcher.$movies) { output in
+                    }
             }
             .task {
                 movieFetcher.fetchPage()
+                print(movieFetcher.movies.count)
                     
         }
         }

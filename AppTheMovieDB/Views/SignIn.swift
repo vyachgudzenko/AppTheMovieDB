@@ -21,16 +21,18 @@ struct SignIn: View {
                     .aspectRatio(contentMode: .fit)
                     .padding(.top,100)
                 
-                SignInTextAndSecureField(text: $authorizationVM.username, placeholderText: "Enter your name", type: .textField)
+                SignInTextAndSecureField(text: $authorizationVM.usernameField, isCorrect: $authorizationVM.usernameIsCorrect, placeholderText: "Enter your name", type: .textField)
                     .frame(height:70)
                     .padding(.top,50)
                     
-                SignInTextAndSecureField(text: $authorizationVM.password, placeholderText: "Enter your password", type: .secureField)
+                SignInTextAndSecureField(text: $authorizationVM.passwordField, isCorrect: $authorizationVM.passwordIsCorrect, placeholderText: "Enter your password", type: .secureField)
                     .frame(height:70)
                     .padding(.top,50)
                     
                 Button {
-                    authorizationVM.logIn()
+                    authorizationVM.logining = true
+                    print(authorizationVM.logining)
+                    print(authorizationVM.requestToken)
                 } label: {
                     Text("Go")
                         .frame(width: 180, height: 70)
@@ -43,7 +45,7 @@ struct SignIn: View {
                         PopularMovies()
                     }
                 }
-                .alert("Something went wrong. Check login and password",isPresented: $isError){
+                .alert(authorizationVM.errorMessage,isPresented: $authorizationVM.isError){
                     Button("OK", role: .cancel) {
                         
                     }

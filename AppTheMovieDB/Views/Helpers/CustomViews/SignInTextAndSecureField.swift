@@ -15,13 +15,18 @@ enum TypeTextField{
 struct SignInTextAndSecureField: View {
     
     @Binding var text:String
+    @Binding var isCorrect:Bool
     let placeholderText:String
     let type:TypeTextField
+    
+    var strokeColor:Color{
+        return text.isEmpty ? .white : isCorrect ? .strokeColor : .red
+    }
     
     var body: some View{
         ZStack{
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color.strokeColor,lineWidth: 2)
+                .stroke(strokeColor,lineWidth: 2)
             if text.isEmpty{
                 Text(placeholderText)
                     .foregroundColor(.gray)

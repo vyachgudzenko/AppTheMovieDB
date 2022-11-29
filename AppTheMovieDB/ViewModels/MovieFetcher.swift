@@ -59,7 +59,6 @@ class MovieFetcher:CombineNetwork,ObservableObject{
     
     func addNextPage(){
         numberOfPage += 1
-        var nextPageMovies:[Page.Preview] = []
         createRequest(urlString: urlStringForPage, typeOfData: Page.self)
             .map({ page -> [Page.Preview] in
                 return page.results
@@ -71,9 +70,9 @@ class MovieFetcher:CombineNetwork,ObservableObject{
                     print("Data successfully downloaded")
                 }
             } receiveValue: { previews in
-                nextPageMovies = previews
+                self.movies += previews
             }
             .store(in: &anyCancellables)
-        movies += nextPageMovies
+        
     }
 }

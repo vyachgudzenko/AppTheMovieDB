@@ -42,7 +42,7 @@ class CombineNetwork:NetworkCombineProtocol{
         var urlRequest = URLRequest(url: url)
         if !(params is EmptyParams){
             let httpBody = try? JSONEncoder().encode(params)
-            print(httpBody)
+            print(String(data: httpBody!, encoding: .utf8))
             urlRequest.httpBody = httpBody
             urlRequest.httpMethod = "POST"
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")

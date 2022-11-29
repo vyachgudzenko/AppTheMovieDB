@@ -8,63 +8,108 @@
 import SwiftUI
 import Combine
 
+//@MainActor
 class AuthoraizationViewModel:CombineNetwork, ObservableObject{
-    @Published var username:String = "vyachProfileForTest"
-    @Published var password:String = "swift2022"
+    private var username:String = "vyachProfileForTest"
+    private var password:String = "swift2022"
+    @Published var usernameField:String = "vyachProfileForTest"
+    @Published var passwordField:String = "swift2022"
+    @Published var usernameIsCorrect:Bool = false
+    @Published var passwordIsCorrect:Bool  = false 
     @Published var isLogin:Bool = false
-    private var requestToken:String = ""
-    var sessionId:String?
+    @Published var isError:Bool = false
+    @Published var errorMessage:String = ""
+    @Published var requestToken:String = "empty request token"
+    @Published var logining:Bool = false
+    @Published var verifiedToken:String = ""
+    @Published var sessionId:String = ""
     private var anyCancellables = Set<AnyCancellable>()
     
     var authorizationInfo:AuthWithLogin {
-        let authStruct:AuthWithLogin = AuthWithLogin(username: username, password: password, requestToken: requestToken)
+        let authStruct:AuthWithLogin = AuthWithLogin(username: username, password: password, requestToken: self.requestToken)
         return authStruct
     }
     
-    func logIn(){
-        createRequest(urlString: URLConstans.requestTokenLink, typeOfData: RequestToken.self)
-            .map { newToken -> String in
-                return newToken.requestToken
-            }
-            .sink { completion in
-                if case let .failure(error) = completion {
-                    print(error.localizedDescription)                }
-                else if case .finished = completion {
-                    self.isLogin = true
-                    print("token successfully")
+    override init(){
+        super.init()
+        $usernameField
+            .map { usernameForVerified -> Bool in
+                if usernameForVerified == self.username{
+                    return true
                 }
-            } receiveValue: { token in
-                print("new token \(token)")
-                self.requestToken = token
-                
+                return false
             }
+            .assign(to: \.usernameIsCorrect, on: self)
             .store(in: &anyCancellables)
-        createRequest(urlString: URLConstans.authWithLoginLink,params: authorizationInfo ,typeOfData: RequestToken.self)
-            .map { tokenAfterAuth -> String in
-                return tokenAfterAuth.requestToken
-            }
-            .sink { completion in
-                if case let .failure(error) = completion {
-                    print(error.localizedDescription)                }
-                else if case .finished = completion {
-                    self.isLogin = true
-                    print("token successfully")
+        $passwordField
+            .map { passForVerified -> Bool in
+                if passForVerified == self.password{
+                    return true
                 }
-            } receiveValue: { tokenAfterAuth in
-                print("tokent after auth \(tokenAfterAuth)")
-                self.requestToken = tokenAfterAuth
-                
+                return false
             }
+            .assign(to: \.passwordIsCorrect, on: self)
+            .store(in: &anyCancellables)
+        $logining
+            .flatMap { logining -> AnyPublisher<String,Never> in
+                    return self.createRequest(urlString: URLConstans.requestTokenLink, typeOfData: RequestToken.self)
+                        .map { requestToken in
+                            print("request token in pipeline, after logining \(requestToken.requestToken)")
+                            return requestToken.requestToken
+                        }
+                        .replaceError(with: "Bad request token")
+                        .eraseToAnyPublisher()
+            }
+            .assign(to: \.requestToken, on: self)
+            .store(in: &anyCancellables)
+        
+    }
+    
+    func logIn(){
+       
+        createRequest(urlString: URLConstans.requestTokenLink, typeOfData: RequestToken.self)
+            .map({ requestToken in
+                return requestToken.requestToken
+            })
+            .sink(receiveCompletion: { completion in
+                if case let .failure(error) = completion {
+                    self.errorMessage = error.localizedDescription
+                    self.isError = true  }
+                else if case .finished = completion {
+                    print("Request token after Auth successfully")
+                }
+            }, receiveValue: { value in
+                self.requestToken = value
+            })
+            .store(in: &anyCancellables)
+            print(requestToken)
+        createRequest(urlString: URLConstans.authWithLoginLink, params: authorizationInfo,typeOfData: RequestToken.self)
+            .map { $0.requestToken }
+            .sink(receiveCompletion: { completion in
+                if case let .failure(error) = completion {
+                    self.errorMessage = error.localizedDescription
+                    self.isError = true  }
+                else if case .finished = completion {
+                    print("Request token after Auth successfully")
+                }
+            }, receiveValue: { value in
+                self.requestToken = value
+            })
+            .store(in: &anyCancellables)
+        createRequest(urlString: URLConstans.sessionIdLink, params: RequestToken(requestToken: requestToken),typeOfData: ResponseSessionId.self)
+            .map{ $0.sessionId }
+            .sink(receiveCompletion: { completion in
+                if case let .failure(error) = completion {
+                    self.errorMessage = error.localizedDescription
+                    self.isError = true        }
+                else if case .finished = completion {
+                    print("SessionId successfully")
+                }
+            }, receiveValue: { value in
+                self.sessionId = value
+            })
             .store(in: &anyCancellables)
 
     }
     
-    
-    /*
-    func logIn() async throws{
-        requestToken = try await createRequest(urlString: URLConstans.requestTokenLink, typeOfData: RequestToken.self).requestToken
-        requestToken = try await createRequest(urlString: URLConstans.authWithLoginLink,params: authorizationInfo, typeOfData: RequestToken.self).requestToken
-        sessionId = try await createRequest(urlString: URLConstans.sessionIdLink, params: RequestToken(requestToken: requestToken),typeOfData: ResponseSessionId.self).sessionId
-    }
-     */
 }
