@@ -37,12 +37,13 @@ class CombineNetwork:NetworkCombineProtocol{
         urlString:String,
         params:P = EmptyParams(),
         typeOfData: T.Type) -> AnyPublisher<T,FetchError> {
+        print("start func createRequest \(Date())")
         guard let url = URL(string: urlString) else {
             return Fail(error: FetchError.badURL).eraseToAnyPublisher() }
         var urlRequest = URLRequest(url: url)
+        print(params)
         if !(params is EmptyParams){
             let httpBody = try? JSONEncoder().encode(params)
-            print(String(data: httpBody!, encoding: .utf8))
             urlRequest.httpBody = httpBody
             urlRequest.httpMethod = "POST"
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")

@@ -50,8 +50,7 @@ struct PopularMovies: View {
                                 }
                             })
                     )
-                    .onReceive(movieFetcher.$movies) { output in
-                    }
+                    
             }
             .task {
                 movieFetcher.fetchPage()

@@ -50,54 +50,10 @@ class AuthoraizationViewModel:CombineNetwork, ObservableObject{
             }
             .assign(to: \.passwordIsCorrect, on: self)
             .store(in: &anyCancellables)
-        $logining
-            .flatMap { logining -> AnyPublisher<String,Never> in
-                    return self.createRequest(urlString: URLConstans.requestTokenLink, typeOfData: RequestToken.self)
-                        .map { requestToken in
-                            //print("request token in pipeline, after logining \(requestToken.requestToken)")
-                            return requestToken.requestToken
-                        }
-                        .replaceError(with: "Bad request token")
-                        .eraseToAnyPublisher()
-            }
-            .assign(to: \.requestToken, on: self)
-            .store(in: &anyCancellables)
-        $requestToken
-            .flatMap { token -> AnyPublisher<String,Never> in
-                return self.createRequest(urlString: URLConstans.authWithLoginLink, params: self.authorizationInfo,typeOfData: RequestToken.self)
-                    .map { requestToken  in
-                        //print("request token in pipeline, after auth \(requestToken.requestToken)")
-                        return requestToken.requestToken
-                    }
-                    .replaceError(with: "Bad auth token")
-                    .eraseToAnyPublisher()
-            }
-            .assign(to: \.verifiedToken, on: self)
-            .store(in: &anyCancellables)
-        $verifiedToken
-            .flatMap { verifiedT -> AnyPublisher<String,Never> in
-                return self.createRequest(urlString: URLConstans.authWithLoginLink, params: RequestToken(requestToken: self.verifiedToken),typeOfData: ResponseSessionId.self)
-                    .map({ responseSessionID in
-                        //print("sessionID in pipeline \(responseSessionID.sessionId)")
-                        return responseSessionID.sessionId
-                    })
-                    .replaceError(with: "")
-                    .eraseToAnyPublisher()
-            }
-            .assign(to: \.sessionId, on: self)
-            .store(in: &anyCancellables)
-        $sessionId
-            .map { session -> Bool in
-                return session.count < 5 ? false : true
-            }
-            .assign(to: \.isLogin, on: self)
-            .store(in: &anyCancellables)
-    }
-    
-    func login(){
         
     }
-    /*
+    
+    
      //тут не зберігаються дані в властивостях і іх неможливо використати далі
     func logIn(){
        
@@ -107,43 +63,45 @@ class AuthoraizationViewModel:CombineNetwork, ObservableObject{
             })
             .sink(receiveCompletion: { completion in
                 if case let .failure(error) = completion {
-                    self.errorMessage = error.localizedDescription
+                    self.errorMessage = "ошибка при попытке получить request token"
                     self.isError = true  }
                 else if case .finished = completion {
-                    print("Request token after Auth successfully")
+                    
                 }
             }, receiveValue: { value in
+                print("time request token \(Date())")
                 self.requestToken = value
             })
             .store(in: &anyCancellables)
-            print(requestToken)
+            print("request tokent beetween \(self.requestToken)")
         createRequest(urlString: URLConstans.authWithLoginLink, params: authorizationInfo,typeOfData: RequestToken.self)
             .map { $0.requestToken }
             .sink(receiveCompletion: { completion in
                 if case let .failure(error) = completion {
-                    self.errorMessage = error.localizedDescription
+                    self.errorMessage = "ошибка при попытке получить подтвержденный request token"
                     self.isError = true  }
                 else if case .finished = completion {
                     print("Request token after Auth successfully")
                 }
             }, receiveValue: { value in
-                self.requestToken = value
+                print("time verified token \(Date())")
+                self.verifiedToken = value
             })
             .store(in: &anyCancellables)
-        createRequest(urlString: URLConstans.sessionIdLink, params: RequestToken(requestToken: requestToken),typeOfData: ResponseSessionId.self)
+        createRequest(urlString: URLConstans.sessionIdLink, params: RequestToken(requestToken: verifiedToken),typeOfData: ResponseSessionId.self)
             .map{ $0.sessionId }
             .sink(receiveCompletion: { completion in
                 if case let .failure(error) = completion {
-                    self.errorMessage = error.localizedDescription
+                    self.errorMessage = "ошибка при попытке получить session id"
                     self.isError = true        }
                 else if case .finished = completion {
                     print("SessionId successfully")
                 }
             }, receiveValue: { value in
+                print("time session id \(Date())")
                 self.sessionId = value
             })
             .store(in: &anyCancellables)
 
     }
-    */
 }
