@@ -54,7 +54,7 @@ class AuthoraizationViewModel:CombineNetwork, ObservableObject{
             .flatMap { logining -> AnyPublisher<String,Never> in
                     return self.createRequest(urlString: URLConstans.requestTokenLink, typeOfData: RequestToken.self)
                         .map { requestToken in
-                            print("request token in pipeline, after logining \(requestToken.requestToken)")
+                            //print("request token in pipeline, after logining \(requestToken.requestToken)")
                             return requestToken.requestToken
                         }
                         .replaceError(with: "Bad request token")
@@ -62,9 +62,43 @@ class AuthoraizationViewModel:CombineNetwork, ObservableObject{
             }
             .assign(to: \.requestToken, on: self)
             .store(in: &anyCancellables)
-        
+        $requestToken
+            .flatMap { token -> AnyPublisher<String,Never> in
+                return self.createRequest(urlString: URLConstans.authWithLoginLink, params: self.authorizationInfo,typeOfData: RequestToken.self)
+                    .map { requestToken  in
+                        //print("request token in pipeline, after auth \(requestToken.requestToken)")
+                        return requestToken.requestToken
+                    }
+                    .replaceError(with: "Bad auth token")
+                    .eraseToAnyPublisher()
+            }
+            .assign(to: \.verifiedToken, on: self)
+            .store(in: &anyCancellables)
+        $verifiedToken
+            .flatMap { verifiedT -> AnyPublisher<String,Never> in
+                return self.createRequest(urlString: URLConstans.authWithLoginLink, params: RequestToken(requestToken: self.verifiedToken),typeOfData: ResponseSessionId.self)
+                    .map({ responseSessionID in
+                        //print("sessionID in pipeline \(responseSessionID.sessionId)")
+                        return responseSessionID.sessionId
+                    })
+                    .replaceError(with: "")
+                    .eraseToAnyPublisher()
+            }
+            .assign(to: \.sessionId, on: self)
+            .store(in: &anyCancellables)
+        $sessionId
+            .map { session -> Bool in
+                return session.count < 5 ? false : true
+            }
+            .assign(to: \.isLogin, on: self)
+            .store(in: &anyCancellables)
     }
     
+    func login(){
+        
+    }
+    /*
+     //тут не зберігаються дані в властивостях і іх неможливо використати далі
     func logIn(){
        
         createRequest(urlString: URLConstans.requestTokenLink, typeOfData: RequestToken.self)
@@ -111,5 +145,5 @@ class AuthoraizationViewModel:CombineNetwork, ObservableObject{
             .store(in: &anyCancellables)
 
     }
-    
+    */
 }

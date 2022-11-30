@@ -32,7 +32,10 @@ struct SignIn: View {
                 Button {
                     authorizationVM.logining = true
                     print(authorizationVM.logining)
-                    print(authorizationVM.requestToken)
+                    print("requestToken in signin \(authorizationVM.requestToken)")
+                    print(authorizationVM.authorizationInfo)
+                    print("verifiedToken in signIn\(authorizationVM.verifiedToken)")
+                    print("sessionId in signIn \(authorizationVM.sessionId)")
                 } label: {
                     Text("Go")
                         .frame(width: 180, height: 70)
