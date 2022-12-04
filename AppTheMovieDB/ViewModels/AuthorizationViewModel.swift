@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class AuthoraizationViewModel:Network, ObservableObject{
     @Published var username:String = "vyachProfileForTest"
     @Published var password:String = "swift2022"
@@ -23,5 +24,8 @@ class AuthoraizationViewModel:Network, ObservableObject{
         requestToken = try await createRequest(urlString: URLConstans.requestTokenLink, typeOfData: RequestToken.self).requestToken
         requestToken = try await createRequest(urlString: URLConstans.authWithLoginLink,params: authorizationInfo, typeOfData: RequestToken.self).requestToken
         sessionId = try await createRequest(urlString: URLConstans.sessionIdLink, params: RequestToken(requestToken: requestToken),typeOfData: ResponseSessionId.self).sessionId
+        if sessionId != nil{
+            isLogin = true
+        }
     }
 }

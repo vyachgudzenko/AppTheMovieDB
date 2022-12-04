@@ -33,9 +33,7 @@ struct SignIn: View {
                     Task{
                         do{
                             try await authorizationVM.logIn()
-                            if authorizationVM.sessionId != nil {
-                                isLogin = true
-                            }
+                            
                         } catch {
                             isError = true
                         }
@@ -47,7 +45,7 @@ struct SignIn: View {
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                         .foregroundColor(.white)
                         .padding(.top,50)
-                }.fullScreenCover(isPresented: $isLogin) {
+                }.fullScreenCover(isPresented: $authorizationVM.isLogin) {
                     NavigationView{
                         PopularMovies()
                     }

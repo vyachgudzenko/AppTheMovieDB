@@ -9,10 +9,9 @@ import SwiftUI
 
 
 
-//@MainActor
+@MainActor
 class MovieFetcher:Network,ObservableObject{
     @Published var numberOfPage:Int = 1
-    
     @Published var movies: [Page.Preview] = []
     @Published var currentMovie:Movie = Movie.defaultMovie
     @Published var currentId:Int = 0 {
@@ -25,9 +24,13 @@ class MovieFetcher:Network,ObservableObject{
         }
     }
     
+    var urlStringToFetchPage:String{
+        return "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans.apiKey)&language=en-US&page=\(numberOfPage)"
+    }
+    
+    
     func fetchPage() async throws -> [Page.Preview]{
-        let urlString = "https://api.themoviedb.org/3/movie/popular?api_key=\(URLConstans.apiKey)&language=en-US&page=\(numberOfPage)"
-        let previews = try await createRequest(urlString: urlString, typeOfData: Page.self).results
+        let previews = try await createRequest(urlString: urlStringToFetchPage, typeOfData: Page.self).results
         return previews
     }
     
