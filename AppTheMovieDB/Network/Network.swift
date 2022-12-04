@@ -28,7 +28,7 @@ enum FetchError:Error{
     }
 }
 
-
+//
 class CombineNetwork:NetworkCombineProtocol{
     
     struct EmptyParams:Encodable {}
@@ -37,11 +37,9 @@ class CombineNetwork:NetworkCombineProtocol{
         urlString:String,
         params:P = EmptyParams(),
         typeOfData: T.Type) -> AnyPublisher<T,FetchError> {
-        print("start func createRequest \(Date())")
         guard let url = URL(string: urlString) else {
             return Fail(error: FetchError.badURL).eraseToAnyPublisher() }
         var urlRequest = URLRequest(url: url)
-        print(params)
         if !(params is EmptyParams){
             let httpBody = try? JSONEncoder().encode(params)
             urlRequest.httpBody = httpBody

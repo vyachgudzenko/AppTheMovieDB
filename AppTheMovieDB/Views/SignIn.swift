@@ -30,7 +30,10 @@ struct SignIn: View {
                     .padding(.top,50)
                     
                 Button {
-                    authorizationVM.logIn()
+                    print("request token \(authorizationVM.requestToken)")
+                    print("auth info \(authorizationVM.authorizationInfo)")
+                    print("verified token \(authorizationVM.verifiedToken)")
+                    print("session id \(authorizationVM.sessionId)")
                 } label: {
                     Text("Go")
                         .frame(width: 180, height: 70)
